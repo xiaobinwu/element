@@ -64,6 +64,7 @@ export const once = function(el, event, fn) {
 };
 
 /* istanbul ignore next */
+// 判断是否存在class
 export function hasClass(el, cls) {
   if (!el || !cls) return false;
   if (cls.indexOf(' ') !== -1) throw new Error('className should not contain space.');
@@ -75,6 +76,7 @@ export function hasClass(el, cls) {
 };
 
 /* istanbul ignore next */
+// 添加class
 export function addClass(el, cls) {
   if (!el) return;
   var curClass = el.className;
@@ -96,6 +98,7 @@ export function addClass(el, cls) {
 };
 
 /* istanbul ignore next */
+// 移除class
 export function removeClass(el, cls) {
   if (!el || !cls) return;
   var classes = cls.split(' ');

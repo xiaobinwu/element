@@ -22,6 +22,7 @@ export default {
 
   computed: {
     gutter() {
+      // 查找父级Row组件是否配置gutter，根据$options.compontentName来查找
       let parent = this.$parent;
       while (parent && parent.$options.componentName !== 'ElRow') {
         parent = parent.$parent;
@@ -62,7 +63,7 @@ export default {
         });
       }
     });
-
+    // class可以是这种形式[xxx, [yyy, zzz]]
     return h(this.tag, {
       class: ['el-col', classList],
       style

@@ -21,6 +21,7 @@ export default {
   },
 
   computed: {
+    // 计算属性，计算gutter
     style() {
       const ret = {};
 

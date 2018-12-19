@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Loading from './loading.vue';
+// 工具函数
 import { addClass, removeClass, getStyle } from 'element-ui/src/utils/dom';
 import { PopupManager } from 'element-ui/src/utils/popup';
 import afterLeave from 'element-ui/src/utils/after-leave';
