@@ -4,6 +4,10 @@ import Loading from './loading.vue';
 import { addClass, removeClass, getStyle } from 'element-ui/src/utils/dom';
 import { PopupManager } from 'element-ui/src/utils/popup';
 import afterLeave from 'element-ui/src/utils/after-leave';
+/*
+  extend: Vue构造器，构造出一个“子类”，继承父类的属性，进行合并，但不是实例，需要new操作才会变成Vue实例
+  component: 注册或获取全局组件，已实例化
+*/
 const Mask = Vue.extend(Loading);
 
 const loadingDirective = {};

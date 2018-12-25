@@ -5,7 +5,7 @@ import Vue from 'vue';
 const isServer = Vue.prototype.$isServer;
 const SPECIAL_CHARS_REGEXP = /([\:\-\_]+(.))/g;
 const MOZ_HACK_REGEXP = /^moz([A-Z])/;
-const ieVersion = isServer ? 0 : Number(document.documentMode);
+const ieVersion = isServer ? 0 : Number(document.documentMode); // 使用document.documentMode来判断IE浏览器的版本
 
 /* istanbul ignore next */
 const trim = function(string) {
@@ -120,6 +120,7 @@ export function removeClass(el, cls) {
 };
 
 /* istanbul ignore next */
+// 获取style
 export const getStyle = ieVersion < 9 ? function(element, styleName) {
   if (isServer) return;
   if (!element || !styleName) return null;
