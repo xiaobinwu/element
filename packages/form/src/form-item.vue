@@ -45,14 +45,16 @@
 
     componentName: 'ElFormItem',
 
+    // 重写了dispatch、broadcast
     mixins: [emitter],
 
+    // 再次注入，方便表单相关组件能拿到对应的Form和FormItem
     provide() {
       return {
         elFormItem: this
       };
     },
-
+    // 获取注入
     inject: ['elForm'],
 
     props: {
@@ -114,6 +116,7 @@
         return ret;
       },
       form() {
+        // 获取表单
         let parent = this.$parent;
         let parentName = parent.$options.componentName;
         while (parentName !== 'ElForm') {
@@ -133,7 +136,7 @@
         if (path.indexOf(':') !== -1) {
           path = path.replace(/:/, '.');
         }
-
+        // 字段的值
         return getPropByPath(model, path, true).v;
       },
       isRequired() {
@@ -171,6 +174,7 @@
       };
     },
     methods: {
+      // 校验处理逻辑
       validate(trigger, callback = noop) {
         this.validateDisabled = false;
         const rules = this.getFilteredRule(trigger);
@@ -189,7 +193,7 @@
         }
         descriptor[this.prop] = rules;
 
-        const validator = new AsyncValidator(descriptor);
+        const validator = new AsyncValidator(descriptor); // 在这里使用async-validator
         const model = {};
 
         model[this.prop] = this.fieldValue;
@@ -202,11 +206,13 @@
           this.elForm && this.elForm.$emit('validate', this.prop, !errors, this.validateMessage || null);
         });
       },
+      // 清除验证
       clearValidate() {
         this.validateState = '';
         this.validateMessage = '';
         this.validateDisabled = false;
       },
+      // 重置验证
       resetField() {
         this.validateState = '';
         this.validateMessage = '';
@@ -229,16 +235,19 @@
 
         this.broadcast('ElTimeSelect', 'fieldReset', this.initialValue);
       },
+      // 获取规则
       getRules() {
         let formRules = this.form.rules;
         const selfRules = this.rules;
+        // required为true，默认添加必填验证规则
         const requiredRule = this.required !== undefined ? { required: !!this.required } : [];
 
         const prop = getPropByPath(formRules, this.prop || '');
         formRules = formRules ? (prop.o[this.prop || ''] || prop.v) : [];
-
+        // 自己有设置验证规则先返回，没有则获取Form的Rules规则对应字段规则
         return [].concat(selfRules || formRules || []).concat(requiredRule);
       },
+      // 过滤规则
       getFilteredRule(trigger) {
         const rules = this.getRules();
 
@@ -251,9 +260,11 @@
           }
         }).map(rule => objectAssign({}, rule));
       },
+      // 失焦验证
       onFieldBlur() {
         this.validate('blur');
       },
+      // change时验证
       onFieldChange() {
         if (this.validateDisabled) {
           this.validateDisabled = false;
@@ -265,8 +276,10 @@
     },
     mounted() {
       if (this.prop) {
+        // 向上dispath，让Form组件添加FormItem
         this.dispatch('ElForm', 'el.form.addField', [this]);
 
+        // 初始值
         let initialValue = this.fieldValue;
         if (Array.isArray(initialValue)) {
           initialValue = [].concat(initialValue);
@@ -276,7 +289,7 @@
         });
 
         let rules = this.getRules();
-
+        // 监听blur和change，来触发验证
         if (rules.length || this.required !== undefined) {
           this.$on('el.form.blur', this.onFieldBlur);
           this.$on('el.form.change', this.onFieldChange);
@@ -284,6 +297,7 @@
       }
     },
     beforeDestroy() {
+      // 向上dispath，让Form组件移除FormItem
       this.dispatch('ElForm', 'el.form.removeField', [this]);
     }
   };
